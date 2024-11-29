@@ -13,10 +13,9 @@
             background-color: #bde2ee; /* Fondo azul claro */
         }
         h1 {
-        color: #2c3e50; /* Cambia este código de color al que prefieras */
-        font-size: 3em; /* Puedes ajustar el tamaño si es necesario */
+            color: #2c3e50;
+            font-size: 3em;
         }
-
         #reader {
             width: 300px;
             margin: auto;
@@ -38,27 +37,25 @@
             margin: 20px auto; 
             display: block;
         }
-        .reset-button {
-            position: fixed;
-            bottom: 10px;
-            right: 10px;
-            padding: 5px 10px;
-            font-size: 0.8em;
+        .reset-button, .start-camera-button {
+            padding: 10px 15px;
+            font-size: 1em;
             background-color: #ccc;
             color: #333;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            opacity: 0.7;
+            margin: 10px;
         }
-        .reset-button:hover {
+        .reset-button:hover, .start-camera-button:hover {
             background-color: #c099e4;
-            opacity: 1;
+            opacity: 0.9;
         }
     </style>
 </head>
 <body>
     <h1>Gestión de Entrada</h1>
+    <button class="start-camera-button" onclick="startCamera()">Abrir cámara</button>
     <div id="reader"></div>
     <div class="counter">Escaneos realizados:</div>
     <div id="message" class="message"></div>
@@ -92,7 +89,7 @@
                 if (scanLimits[decodedText] < maxScansPerCode) {
                     scanLimits[decodedText]++;
                     const scans = scanLimits[decodedText];
-                    messageElement.textContent = ¡Código QR ${decodedText} escaneado exitosamente! Usos restantes: ${maxScansPerCode - scans};
+                    messageElement.textContent = `¡Código QR ${decodedText} escaneado exitosamente! Usos restantes: ${maxScansPerCode - scans}`;
                     messageElement.classList.remove("error");
                     messageElement.classList.add("message");
 
@@ -105,7 +102,7 @@
                         messageElement.textContent = "Puedes escanear otro código QR.";
                     }, scanPause);
                 } else {
-                    messageElement.textContent = El código QR ${decodedText} ya alcanzó su límite de escaneos (${maxScansPerCode}).;
+                    messageElement.textContent = `El código QR ${decodedText} ya alcanzó su límite de escaneos (${maxScansPerCode}).`;
                     messageElement.classList.remove("message");
                     messageElement.classList.add("error");
                 }
@@ -117,7 +114,7 @@
         }
 
         function onScanFailure(error) {
-            console.warn(Scan failed: ${error});
+            console.warn(`Scan failed: ${error}`);
         }
 
         function resetScans() {
@@ -128,13 +125,18 @@
             }
         }
 
-        let html5QrcodeScanner = new Html5QrcodeScanner(
-            "reader",
-            { fps: 10, qrbox: 250 },
-            false
-        );
+        let html5QrcodeScanner;
 
-        html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        function startCamera() {
+            if (!html5QrcodeScanner) {
+                html5QrcodeScanner = new Html5QrcodeScanner(
+                    "reader",
+                    { fps: 10, qrbox: 250 },
+                    false
+                );
+            }
+            html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+        }
     </script>
 </body>
 </html>
