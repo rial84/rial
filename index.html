@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Entrada</title>
+    <title>Graduación Sacorazonista. Prom 2024</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
     <style>
         body {
@@ -63,7 +63,7 @@
 
     <script>
         // Códigos QR válidos del 1 al 26
-        const validCodes = Array.from({ length: 26 }, (_, i) => (i + 1).toString());
+        const validCodes = Array.from({ length: 27 }, (_, i) => (i + 1).toString());
         const maxScansPerCode = 37; // Límite de escaneos por código
         const scanPause = 5000; // Pausa entre escaneos (en milisegundos)
         let canScan = true; // Controla si se permite escanear
@@ -89,7 +89,7 @@
                 if (scanLimits[decodedText] < maxScansPerCode) {
                     scanLimits[decodedText]++;
                     const scans = scanLimits[decodedText];
-                    messageElement.textContent = `¡Código QR ${decodedText} escaneado exitosamente! Usos restantes: ${maxScansPerCode - scans}`;
+                    messageElement.textContent = `¡Código QR ${decodedText} escaneado exitosamente!. Número de invitados restantes: ${maxScansPerCode - scans}`;
                     messageElement.classList.remove("error");
                     messageElement.classList.add("message");
 
@@ -102,12 +102,12 @@
                         messageElement.textContent = "Puedes escanear otro código QR.";
                     }, scanPause);
                 } else {
-                    messageElement.textContent = `El código QR ${decodedText} ya alcanzó su límite de escaneos (${maxScansPerCode}).`;
+                    messageElement.textContent = `El código QR ${decodedText} ya alcanzó su límite de invitados (${maxScansPerCode}). Lo siento, pero no pueden ingresar más personas.`;
                     messageElement.classList.remove("message");
                     messageElement.classList.add("error");
                 }
             } else {
-                messageElement.textContent = "Código QR no válido. Solo se admiten números del 1 al 26.";
+                messageElement.textContent = "Código QR no válido. Este invitado no puede ingresar.";
                 messageElement.classList.remove("message");
                 messageElement.classList.add("error");
             }
@@ -118,7 +118,7 @@
         }
 
         function resetScans() {
-            if (confirm("¿Estás seguro de que deseas reiniciar los escaneos? Esta acción no se puede deshacer.")) {
+            if (confirm("¿Estás seguro de que deseas reiniciar el registro de scaneos? Esta acción no se puede deshacer.")) {
                 // Limpiar los datos y recargar la página
                 localStorage.clear();
                 location.reload();
